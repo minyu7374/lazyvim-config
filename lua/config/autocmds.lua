@@ -7,6 +7,18 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+-- filetype添加ampl
+vim.filetype.add({
+  filename = {
+    ["go.mod"] = "gomod",
+  },
+  extension = {
+    mod  = "ampl",
+    dat  = "ampl",
+    ampl = "ampl",
+  },
+})
+
 -- Go 语言强制开启自动格式化
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "go",

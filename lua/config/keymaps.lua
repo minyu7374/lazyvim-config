@@ -80,8 +80,10 @@ map("n", "<leader>0", "<cmd>tablast<CR>", { desc = "Jump to Last Tab" })
 -- ===== 复制粘贴 =====
 
 -- paste 模式快速切换（nopaste/paste）
-map("n", "<leader>y", "<cmd>set nopaste<CR>", { desc = "Disable Paste Mode" })
-map("n", "<leader>Y", "<cmd>set paste<CR>", { desc = "Enable Paste Mode" })
+vim.keymap.set("n", "<leader>ty", function()
+  vim.opt.paste = not vim.opt.paste:get()
+  vim.notify("Paste mode: " .. (vim.opt.paste:get() and "ON" or "OFF"))
+end, { desc = "Toggle Paste Mode" })
 
 -- 全选 + 系统剪贴板复制/粘贴
 map({ "n", "v", "o" }, "<M-a>", 'ggVG"+y', { desc = "Select All & Copy to Clipboard" })
