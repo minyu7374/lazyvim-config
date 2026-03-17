@@ -41,6 +41,14 @@ return {
   -- Avante
   {
     "yetone/avante.nvim",
+    opts = {
+      providers = {
+        ["gemini/preview"] = {
+          __inherited_from = "gemini",
+          model = "gemini-3-flash-preview",
+        },
+      },
+    },
     keys = {
       { "<leader>ta", "<cmd>AvanteToggle<cr>", desc = "Toggle Avante" },
     },

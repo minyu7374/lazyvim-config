@@ -13,8 +13,8 @@ vim.filetype.add({
     ["go.mod"] = "gomod",
   },
   extension = {
-    mod  = "ampl",
-    dat  = "ampl",
+    mod = "ampl",
+    dat = "ampl",
     ampl = "ampl",
   },
 })
@@ -24,33 +24,5 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "go",
   callback = function()
     vim.b.autoformat = true
-  end,
-})
-
--- LSP体验增强，自动触发 hover
-local hover_timer = nil
-
-vim.api.nvim_create_autocmd("CursorMoved", {
-  callback = function()
-    if hover_timer then
-      vim.fn.timer_stop(hover_timer)
-      hover_timer = nil
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd("CursorHold", {
-  callback = function()
-    if hover_timer then
-      vim.fn.timer_stop(hover_timer)
-    end
-    -- 单独的 hover 延迟，500ms
-    hover_timer = vim.fn.timer_start(500, function()
-      hover_timer = nil
-      local wintype = vim.fn.win_gettype()
-      if wintype == "" then
-        vim.lsp.buf.hover()
-      end
-    end)
   end,
 })

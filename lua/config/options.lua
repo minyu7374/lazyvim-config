@@ -16,9 +16,9 @@ end
 local opt = vim.opt
 
 -- 缩进
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.shiftwidth = 4
+-- opt.tabstop = 4
+-- opt.softtabstop = 4
+-- opt.shiftwidth = 4
 
 -- 自动读写
 -- opt.hidden = true -- nvim默认
