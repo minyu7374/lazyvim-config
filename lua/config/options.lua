@@ -32,3 +32,11 @@ opt.swapfile = false
 
 -- 自动改变当前目录
 -- opt.autochdir = true
+
+-- 拼写检查
+opt.spelllang = "en,cjk"
+opt.spelloptions = "camel"
+opt.spellfile = {
+  vim.fn.stdpath("config") .. "/spell/en.utf-8.add",
+  vim.fn.stdpath("config") .. "/spell/zh.utf-8.add",
+}
