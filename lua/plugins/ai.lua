@@ -43,9 +43,39 @@ return {
     "yetone/avante.nvim",
     opts = {
       providers = {
-        ["gemini/preview"] = {
+        ["gemini-preview"] = {
           __inherited_from = "gemini",
           model = "gemini-3-flash-preview",
+        },
+        ["nvidia-mimimax"] = {
+          __inherited_from = "openai",
+          endpoint = "https://integrate.api.nvidia.com/v1",
+          api_key_name = "NVIDIA_NIM_API_KEY",
+          model = "minimaxai/minimax-m2.5",
+        },
+        ["nvidia-glm"] = {
+          __inherited_from = "openai",
+          endpoint = "https://integrate.api.nvidia.com/v1",
+          api_key_name = "NVIDIA_NIM_API_KEY",
+          model = "z-ai/glm5",
+        },
+        ["groq"] = {
+          __inherited_from = "openai",
+          endpoint = "https://api.groq.com/openai/v1",
+          api_key_name = "GROQ_API_KEY",
+          model = "qwen/qwen3-32b",
+        },
+        ["qwen/minyu"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openai.wminyu.top:433/qwen/v1",
+          api_key_name = "QWEN_API_KEY",
+          model = "qwen-plus",
+        },
+        ["qwen-max/minyu"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openai.wminyu.top:433/qwen/v1",
+          api_key_name = "QWEN_API_KEY",
+          model = "qwen-max",
         },
       },
     },
