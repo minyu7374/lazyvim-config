@@ -12,7 +12,15 @@ return {
     })
   end,
   opts = {
-    statuscolumn = { enabled = true },
+    picker = {
+      sources = {
+        command_history = {
+          layout = {
+            preset = "select",
+          },
+        },
+      },
+    },
   },
   keys = {
     { "<leader>tt", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "Toggle Explorer (root dir)" },
