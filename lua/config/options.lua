@@ -15,10 +15,10 @@ end
 -- ===== vim 基础配置 =====
 local opt = vim.opt
 
--- 缩进
--- opt.tabstop = 4
--- opt.softtabstop = 4
--- opt.shiftwidth = 4
+-- 制表符&缩进 (.editorconfig细化控制，这里不做太多配置)
+opt.tabstop = 4        -- 显示
+-- opt.softtabstop = 4    -- 编辑
+-- opt.shiftwidth = 4     -- 缩进
 
 -- 自动读写
 -- opt.hidden = true -- nvim默认
