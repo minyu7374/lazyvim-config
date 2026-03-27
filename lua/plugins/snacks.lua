@@ -21,6 +21,9 @@ return {
         },
       },
     },
+    image = {
+      enabled = true,
+    },
   },
   keys = {
     { "<leader>tt", function() Snacks.explorer({ cwd = LazyVim.root() }) end, desc = "Toggle Explorer (root dir)" },
