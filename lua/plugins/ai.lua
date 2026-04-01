@@ -70,6 +70,7 @@ return {
     "claudecode.nvim",
     keys = {
       { "<leader>tl", "<cmd>ClaudeCodeFocus<cr>", desc = "Claude Focus" },
+      { "<leader>tL", "<cmd>ClaudeCode --resume<cr>", desc = "Claude Resume" },
     },
   },
 }
