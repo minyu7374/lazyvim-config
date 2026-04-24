@@ -1,4 +1,5 @@
 local copilot_enabled = false
+local is_root = vim.loop.getuid() == 0
 
 local nvidia_base = {
   __inherited_from = "openai",
@@ -51,6 +52,7 @@ return {
   -- Avante
   {
     "yetone/avante.nvim",
+    enabled = not is_root,
     opts = {
       providers = {
         ["gemini-preview"] = { __inherited_from = "gemini", model = "gemini-3-flash-preview" },
@@ -68,6 +70,7 @@ return {
   -- Claude
   {
     "claudecode.nvim",
+    enabled = not is_root,
     keys = {
       { "<leader>tl", "<cmd>ClaudeCodeFocus<cr>", desc = "Claude Focus" },
       { "<leader>tL", "<cmd>ClaudeCode --resume<cr>", desc = "Claude Resume" },
