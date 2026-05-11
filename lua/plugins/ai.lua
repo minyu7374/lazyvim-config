@@ -6,11 +6,6 @@ local nvidia_base = {
   endpoint = "https://integrate.api.nvidia.com/v1",
   api_key_name = "NVIDIA_NIM_API_KEY",
 }
-local qwen_minyu_base = {
-  __inherited_from = "openai",
-  endpoint = "https://openai.wminyu.top:433/qwen/v1",
-  api_key_name = "QWEN_API_KEY",
-}
 local groq_base = {
   __inherited_from = "openai",
   endpoint = "https://api.groq.com/openai/v1",
@@ -59,8 +54,6 @@ return {
         ["nvidia-mimimax"] = vim.tbl_extend("force", nvidia_base, { model = "minimaxai/minimax-m2.5" }),
         ["nvidia-glm"] = vim.tbl_extend("force", nvidia_base, { model = "z-ai/glm5" }),
         ["groq"] = vim.tbl_extend("force", groq_base, { model = "qwen/qwen3-32b" }),
-        ["qwen/minyu"] = vim.tbl_extend("force", qwen_minyu_base, { model = "qwen-plus" }),
-        ["qwen-max/minyu"] = vim.tbl_extend("force", qwen_minyu_base, { model = "qwen-max" }),
       },
     },
     keys = {
