@@ -4,7 +4,7 @@ return {
     vim.api.nvim_create_autocmd("VimEnter", {
       callback = function()
         -- 无参数启动时，按当前目录打开 explorer
-        if vim.fn.argc() == 0 then
+        if vim.fn.argc() == 0 and vim.fn.has("stdin") == 0 and not vim.o.readonly then
           -- Snacks.explorer()
           Snacks.explorer({ cwd = LazyVim.root() })
         end
