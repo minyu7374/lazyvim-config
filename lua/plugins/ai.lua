@@ -50,9 +50,11 @@ return {
     enabled = not is_root,
     opts = {
       providers = {
-        ["gemini-preview"] = { __inherited_from = "gemini", model = "gemini-3-flash-preview" },
-        ["nvidia-mimimax"] = vim.tbl_extend("force", nvidia_base, { model = "minimaxai/minimax-m2.7" }),
-        ["nvidia-qwen"] = vim.tbl_extend("force", nvidia_base, { model = "qwen/qwen3-coder-480b-a35b-instruct" }),
+        -- ["gemini-preview"] = { __inherited_from = "gemini", model = "gemini-3-flash-preview" },
+        ["nvidia-deepseek"] = vim.tbl_extend("force", nvidia_base, { model = "deepseek-ai/deepseek-v4-pro" }),
+        ["nvidia-glm"] = vim.tbl_extend("force", nvidia_base, { model = "z-ai/glm-5.1" }),
+        ["nvidia-mimimax"] = vim.tbl_extend("force", nvidia_base, { model = "minimaxai/minimax-m3" }),
+        ["nvidia-kimi"] = vim.tbl_extend("force", nvidia_base, { model = "moonshotai/kimi-k2.6" }),
         ["groq"] = vim.tbl_extend("force", groq_base, { model = "qwen/qwen3-32b" }),
       },
     },
