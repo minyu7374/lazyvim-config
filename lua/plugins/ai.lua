@@ -13,27 +13,46 @@ local groq_base = {
 }
 
 return {
-  -- Copilot
+  -- Copilot（copilot.lua 迁移改用为 copilot-native extra 的原生 LSP 内联补全）
+  -- 默认开关由顶层 copilot_enabled 控制，<leader>tc 手动开关（原生内联补全状态是全局的，不再区分 session/global）
   {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
+    "neovim/nvim-lspconfig",
     init = function()
-      vim.cmd("Copilot " .. (copilot_enabled and "enable" or "disable"))
+      -- copilot-native extra 会在 setup 时自动开启内联补全，这里在 copilot 首次 attach 后重置为 copilot_enabled 指定的默认值
+      local initialized = false
+      vim.api.nvim_create_autocmd("LspAttach", {
+        desc = "Copilot 内联补全默认状态",
+        callback = function(args)
+          if initialized then
+            return
+          end
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.name == "copilot" then
+            initialized = true
+            -- 延迟到 extra 的 enable() 之后执行，确保最终为 copilot_enabled 指定的状态
+            vim.schedule(function()
+              vim.lsp.inline_completion.enable(copilot_enabled)
+            end)
+          end
+        end,
+      })
     end,
     opts = {
-      suggestion = { enabled = true },
-    },
-    keys = {
-      { "<leader>tc", "<cmd>Copilot toggle<cr>", desc = "Toggle Copilot" },
-      {
-        "<leader>tC",
-        function()
-          copilot_enabled = not copilot_enabled
-          vim.cmd("Copilot " .. (copilot_enabled and "enable" or "disable"))
-          vim.notify("Copilot " .. (copilot_enabled and "Enabled" or "Disabled"), vim.log.levels.INFO)
-        end,
-        desc = "Toggle Copilot (global)",
+      servers = {
+        copilot = {
+          keys = {
+            {
+              "<leader>tc",
+              function()
+                copilot_enabled = not copilot_enabled
+                vim.lsp.inline_completion.enable(copilot_enabled)
+                vim.notify("Copilot 补全 " .. (copilot_enabled and "已开启" or "已关闭"))
+              end,
+              desc = "Toggle Copilot",
+              mode = { "n" },
+            },
+          },
+        },
       },
     },
   },
