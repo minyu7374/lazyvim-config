@@ -79,17 +79,25 @@ map("n", "<leader>0", "<cmd>tablast<CR>", { desc = "Jump to Last Tab" })
 
 -- ===== 复制粘贴 =====
 
+-- 全选 + 系统剪贴板复制/粘贴
+map({ "n", "v", "o" }, "<M-a>", 'ggVG"+y', { desc = "Select All & Copy to Clipboard" })
+map({ "i", "c" }, "<M-a>", '<Esc>ggVG"+y', { desc = "Select All & Copy to Clipboard" })
+map({ "n", "v", "o" }, "<M-v>", 'ggVG"+p', { desc = "Select All & Paste from Clipboard" })
+map({ "i", "c" }, "<M-v>", '<Esc>ggVG"+p', { desc = "Select All & Paste from Clipboard" })
+
 -- paste 模式快速切换（nopaste/paste）
 vim.keymap.set("n", "<leader>ty", function()
   vim.opt.paste = not vim.opt.paste:get()
   vim.notify("Paste mode: " .. (vim.opt.paste:get() and "ON" or "OFF"))
 end, { desc = "Toggle Paste Mode" })
 
--- 全选 + 系统剪贴板复制/粘贴
-map({ "n", "v", "o" }, "<M-a>", 'ggVG"+y', { desc = "Select All & Copy to Clipboard" })
-map({ "i", "c" }, "<M-a>", '<Esc>ggVG"+y', { desc = "Select All & Copy to Clipboard" })
-map({ "n", "v", "o" }, "<M-v>", 'ggVG"+p', { desc = "Select All & Paste from Clipboard" })
-map({ "i", "c" }, "<M-v>", '<Esc>ggVG"+p', { desc = "Select All & Paste from Clipboard" })
+-- ===== 阅读体验 =====
+
+-- wrap 自动换行快速切换（nowrap/wrap，默认开启见 options.lua）
+vim.keymap.set("n", "<leader>tw", function()
+  vim.opt.wrap = not vim.opt.wrap:get()
+  vim.notify("Wrap mode: " .. (vim.opt.wrap:get() and "ON" or "OFF"))
+end, { desc = "Toggle Wrap Mode" })
 
 -- ===== 注释 =====
 map("n", "<leader>c<leader>", "gcc", { remap = true, desc = "Toggle Comment" })

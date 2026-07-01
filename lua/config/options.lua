@@ -33,6 +33,9 @@ opt.swapfile = false
 -- 自动改变当前目录
 -- opt.autochdir = true
 
+-- 自动换行（LazyVim 默认关闭，这里默认开启）
+opt.wrap = true
+
 -- 拼写检查
 opt.spelllang = "en,cjk"
 opt.spelloptions = "camel"
