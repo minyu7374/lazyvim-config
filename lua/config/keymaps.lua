@@ -99,6 +99,9 @@ vim.keymap.set("n", "<leader>tw", function()
   vim.notify("Wrap mode: " .. (vim.opt.wrap:get() and "ON" or "OFF"))
 end, { desc = "Toggle Wrap Mode" })
 
+-- spell 拼写检查快速切换（复用 LazyVim 内置的 <leader>us）
+map("n", "<leader>ts", "<leader>us", { remap = true, desc = "Toggle Spell Check" })
+
 -- ===== 注释 =====
 map("n", "<leader>c<leader>", "gcc", { remap = true, desc = "Toggle Comment" })
 map("v", "<leader>c<leader>", "gc", { remap = true, desc = "Toggle Comment" })
