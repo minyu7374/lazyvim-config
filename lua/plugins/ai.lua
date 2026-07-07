@@ -1,6 +1,9 @@
-local copilot_enabled = false
-local is_root = vim.loop.getuid() == 0
+-- root 用户下 AI extras 已在 config/lazy.lua 被 cond 跳过，这里直接不加载任何覆盖配置
+if vim.loop.getuid() == 0 then
+  return {}
+end
 
+local copilot_enabled = false
 local nvidia_base = {
   __inherited_from = "openai",
   endpoint = "https://integrate.api.nvidia.com/v1",
@@ -66,7 +69,6 @@ return {
   -- Avante
   {
     "yetone/avante.nvim",
-    enabled = not is_root,
     opts = {
       providers = {
         -- ["gemini-preview"] = { __inherited_from = "gemini", model = "gemini-3-flash-preview" },
@@ -84,7 +86,6 @@ return {
   -- Claude
   {
     "claudecode.nvim",
-    enabled = not is_root,
     keys = {
       { "<leader>tl", "<cmd>ClaudeCodeFocus<cr>", desc = "Claude Focus" },
       { "<leader>tL", "<cmd>ClaudeCode --resume<cr>", desc = "Claude Resume" },

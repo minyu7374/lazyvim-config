@@ -14,10 +14,18 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- root 用户下不加载任何 AI extras（配合 plugins/ai.lua 顶部的 is_root 早退，彻底禁用 AI）
+local is_root = vim.loop.getuid() == 0
+
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    -- AI extras（原本在 lazyvim.json，移到这里以便随 is_root 一起开关；覆盖配置见 plugins/ai.lua）
+    { import = "lazyvim.plugins.extras.ai.copilot-native", cond = not is_root },
+    { import = "lazyvim.plugins.extras.ai.avante", cond = not is_root },
+    { import = "lazyvim.plugins.extras.ai.claudecode", cond = not is_root },
+    { import = "lazyvim.plugins.extras.ai.codeium", cond = not is_root },
     -- import/override with your plugins
     { import = "plugins" },
   },
