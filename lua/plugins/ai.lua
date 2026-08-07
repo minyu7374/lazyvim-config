@@ -40,31 +40,37 @@ return {
         end,
       })
     end,
-    opts = {
-      servers = {
-        copilot = {
-          keys = {
-            {
-              "<leader>tc",
-              function()
-                copilot_enabled = not copilot_enabled
-                vim.lsp.inline_completion.enable(copilot_enabled)
-                vim.notify("Copilot 补全 " .. (copilot_enabled and "已开启" or "已关闭"))
-              end,
-              desc = "Toggle Copilot",
-              mode = { "n" },
-            },
-          },
-        },
+    keys = {
+      {
+        "<leader>tc",
+        function()
+          copilot_enabled = not copilot_enabled
+          vim.lsp.inline_completion.enable(copilot_enabled)
+          vim.notify("Copilot 补全 " .. (copilot_enabled and "已开启" or "已关闭"))
+        end,
+        desc = "Toggle Copilot",
+        mode = { "n" },
       },
     },
   },
-  -- Codeium
+  -- Codeium（在 LazyVim ai.codeium extra 基础上改，opts/ai_accept/lualine 都沿用 extra）
   {
     "Exafunction/codeium.nvim",
+    -- 去掉 extra 的 event = "InsertEnter"，改为只由 <leader>tm（cmd = "Codeium"）触发加载。
+    -- event 是列表属性，沿 spec 链累加，写成函数才能整体替换
+    event = function()
+      return {}
+    end,
     keys = {
       { "<leader>tm", "<cmd>Codeium Toggle<cr>", desc = "Toggle Codeium" },
     },
+    config = function(_, opts)
+      require("codeium").setup(opts)
+      -- server.enabled 才是总开关（默认 true），这里置为关闭，由 :Codeium Toggle 翻转。
+      -- 注意不能改 virtual_text.enabled：它为 false 时 virtual_text.setup() 直接 return，
+      -- autocmd 全不注册，之后 toggle 也出不来候选
+      require("codeium").s.enabled = false
+    end,
   },
   -- Avante
   {
