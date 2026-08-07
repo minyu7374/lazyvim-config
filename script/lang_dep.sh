@@ -159,11 +159,19 @@ function for_shell() {
 }
 
 function for_lua() {
-    cargo install stylua # formatter
+    # cargo install stylua # formatter
+    cargo install stylua --features lua54,luajit
+
     # lua-language-server: LSP
     case "$DISTRO" in
+    Gentoo)
+        sudo emerge --update lua-language-server
+        ;;
     Arch)
         sudo pacman -Sy --noconfirm lua-language-server
+        ;;
+    MacPorts)
+        sudo port install lua-language-server
         ;;
     Homebrew)
         brew install lua-language-server
