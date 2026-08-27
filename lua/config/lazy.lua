@@ -22,10 +22,10 @@ require("lazy").setup({
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- AI extras（原本在 lazyvim.json，移到这里以便随 is_root 一起开关；覆盖配置见 plugins/ai.lua）
-    { import = "lazyvim.plugins.extras.ai.copilot-native", cond = not is_root },
     { import = "lazyvim.plugins.extras.ai.avante", cond = not is_root },
-    { import = "lazyvim.plugins.extras.ai.claudecode", cond = not is_root },
-    { import = "lazyvim.plugins.extras.ai.codeium", cond = not is_root },
+    -- { import = "lazyvim.plugins.extras.ai.copilot-native", cond = not is_root },
+    -- { import = "lazyvim.plugins.extras.ai.claudecode", cond = not is_root },
+    -- { import = "lazyvim.plugins.extras.ai.codeium", cond = not is_root },
     -- import/override with your plugins
     { import = "plugins" },
   },
