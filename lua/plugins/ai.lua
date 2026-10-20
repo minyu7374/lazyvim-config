@@ -76,6 +76,9 @@ return {
   -- Avante
   {
     "yetone/avante.nvim",
+    dependencies = {
+      { "ColinKennedy/mega.cmdparse", dependencies = { "ColinKennedy/mega.logging" } },
+    },
     -- 旧 API provider 配置保留，待后续恢复：
     -- opts = {
     --   providers = {
