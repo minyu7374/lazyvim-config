@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 安装各语言的 LSP / formatter / linter / DAP 依赖工具。
+# 安装 Neovim 公共工具、各语言的 LSP / formatter / linter / DAP，以及 AI 插件适配器。
 # set -x
 
 case "$(uname -s)" in
@@ -40,6 +40,39 @@ fi
 function pre_task() {
     npm_install="npm install -g"
     which pnpm >/dev/null && npm_install="pnpm add -g"
+}
+
+function for_neovim() {
+    # Snacks 搜索需要 rg / fd，图片预览需要 ImageMagick。
+    case "$DISTRO" in
+    Gentoo)
+        sudo emerge --update sys-apps/ripgrep sys-apps/fd media-gfx/imagemagick
+        ;;
+    Arch)
+        sudo pacman -Sy --noconfirm ripgrep fd imagemagick
+        ;;
+    SUSE)
+        sudo zypper in -y ripgrep fd ImageMagick
+        ;;
+    Debian)
+        # Debian 的 fd 命令名为 fdfind，Snacks 支持直接使用它。
+        sudo apt-get install ripgrep fd-find imagemagick
+        ;;
+    RHEL)
+        sudo dnf install ripgrep fd-find ImageMagick
+        ;;
+    MacPorts)
+        sudo port install ripgrep fd ImageMagick7
+        # ImageMagick7 的命令目录不在默认 prefix/bin，按 port notes 加入 PATH。
+        port notes ImageMagick7
+        ;;
+    Homebrew)
+        brew install ripgrep fd imagemagick
+        ;;
+    esac
+
+    # 当前 nvim-treesitter 要求 tree-sitter CLI 0.26.1+，且不支持 npm 安装版本。
+    cargo install --locked tree-sitter-cli
 }
 
 function for_c() {
@@ -110,6 +143,7 @@ function for_haskell() {
 }
 
 function for_markdown() {
+    $npm_install prettier@latest          # LazyVim Markdown formatter
     $npm_install markdownlint-cli2@latest # linter
     $npm_install markdown-toc@latest      # 目录生成
 
@@ -132,7 +166,7 @@ function for_python() {
 }
 
 function for_shell() {
-    # shellcheck: linter
+    # ShellCheck：shell linter
     case "$DISTRO" in
     Gentoo)
         sudo emerge --update shellcheck-bin
@@ -231,11 +265,15 @@ function for_copilot() {
     $npm_install @github/copilot-language-server@latest # Copilot LSP
 }
 
+function for_ai() {
+    $npm_install @agentclientprotocol/codex-acp@latest # Agentic 的 Codex ACP 适配器
+}
+
 pre_task
 
 [ -z "$*" ] &&
     # grep -oP '(?<=for_).*(?=\(\) \{)' ./script/lang_dep.sh | xargs
-    set -- c go haskell markdown python shell lua json yaml toml sql nginx copilot
+    set -- neovim c go haskell markdown python shell lua json yaml toml sql nginx copilot ai
 
 for lang in "$@"; do
     eval "for_$lang"

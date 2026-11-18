@@ -14,15 +14,15 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- root 用户下不加载任何 AI extras（配合 plugins/ai.lua 顶部的 is_root 早退，彻底禁用 AI）
-local is_root = vim.loop.getuid() == 0
+-- 旧 AI extras 保留以便恢复；当前 AI 插件及 root 用户禁用逻辑在 plugins/ai.lua。
+-- local is_root = vim.loop.getuid() == 0
 
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- AI extras（原本在 lazyvim.json，移到这里以便随 is_root 一起开关；覆盖配置见 plugins/ai.lua）
-    { import = "lazyvim.plugins.extras.ai.avante", cond = not is_root },
+    -- { import = "lazyvim.plugins.extras.ai.avante", cond = not is_root },
     -- { import = "lazyvim.plugins.extras.ai.copilot-native", cond = not is_root },
     -- { import = "lazyvim.plugins.extras.ai.claudecode", cond = not is_root },
     -- { import = "lazyvim.plugins.extras.ai.codeium", cond = not is_root },
@@ -38,6 +38,10 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
+  -- Avante 构建所需的超时覆盖随插件停用，保留以便恢复。
+  -- git = {
+  --   timeout = 600,
+  -- },
   install = { colorscheme = { "tokyonight", "habamax" } },
   checker = {
     enabled = true, -- check for plugin updates periodically

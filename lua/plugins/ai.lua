@@ -1,4 +1,4 @@
--- root 用户下 AI extras 已在 config/lazy.lua 被 cond 跳过，这里直接不加载任何覆盖配置
+-- root 用户下不加载 AI 插件或覆盖配置。
 if vim.loop.getuid() == 0 then
   return {}
 end
@@ -73,45 +73,98 @@ return {
   --     require("codeium").s.enabled = false
   --   end,
   -- },
-  -- Avante
+  -- Agentic：默认使用 Codex，也可切换到 OpenCode。
   {
-    "yetone/avante.nvim",
-    dependencies = {
-      { "ColinKennedy/mega.cmdparse", dependencies = { "ColinKennedy/mega.logging" } },
-    },
-    -- 旧 API provider 配置保留，待后续恢复：
-    -- opts = {
-    --   providers = {
-    --     -- ["gemini-preview"] = { __inherited_from = "gemini", model = "gemini-3-flash-preview" },
-    --     ["nvidia-deepseek"] = vim.tbl_extend("force", nvidia_base, { model = "deepseek-ai/deepseek-v4-pro" }),
-    --     ["nvidia-glm"] = vim.tbl_extend("force", nvidia_base, { model = "z-ai/glm-5.1" }),
-    --     ["nvidia-mimimax"] = vim.tbl_extend("force", nvidia_base, { model = "minimaxai/minimax-m3" }),
-    --     ["nvidia-kimi"] = vim.tbl_extend("force", nvidia_base, { model = "moonshotai/kimi-k2.6" }),
-    --     ["groq"] = vim.tbl_extend("force", groq_base, { model = "qwen/qwen3-32b" }),
-    --   },
-    -- },
+    "carlos-algms/agentic.nvim",
+    lazy = true,
     opts = {
-      provider = "opencode",
+      provider = "codex-acp",
       acp_providers = {
-        codex = {
-          command = "codex-acp",
-          args = {},
-          env = {
-            NODE_NO_WARNINGS = "1",
-            HOME = os.getenv("HOME"),
-            PATH = os.getenv("PATH"),
-          },
-        },
-        opencode = {
-          command = "opencode",
-          args = { "acp" },
+        ["codex-acp"] = {
+          -- 其余环境变量由 ACP 子进程继承，沿用旧配置的 Node 警告设置。
+          env = { NODE_NO_WARNINGS = "1" },
         },
       },
     },
     keys = {
-      { "<leader>ta", "<cmd>AvanteToggle<cr>", desc = "Toggle Avante" },
+      {
+        "<leader>ta",
+        function()
+          require("agentic").toggle()
+        end,
+        mode = { "n", "v" },
+        desc = "Toggle Agentic",
+      },
+      {
+        "<leader>aa",
+        function()
+          require("agentic").add_selection_or_file_to_context()
+        end,
+        mode = { "n", "v" },
+        desc = "Agentic Add File or Selection",
+      },
+      {
+        "<leader>an",
+        function()
+          require("agentic").new_session()
+        end,
+        desc = "Agentic New Session",
+      },
+      {
+        "<leader>ap",
+        function()
+          require("agentic").switch_provider()
+        end,
+        desc = "Agentic Switch Provider",
+      },
+      {
+        "<leader>ar",
+        function()
+          require("agentic").restore_session()
+        end,
+        desc = "Agentic Restore Session",
+      },
     },
   },
+  -- Avante 已停用，完整配置注释保留以便恢复。
+  -- {
+  --   "yetone/avante.nvim",
+  --   dependencies = {
+  --     { "ColinKennedy/mega.cmdparse", dependencies = { "ColinKennedy/mega.logging" } },
+  --   },
+  --   -- 旧 API provider 配置保留，待后续恢复：
+  --   -- opts = {
+  --   --   providers = {
+  --   --     -- ["gemini-preview"] = { __inherited_from = "gemini", model = "gemini-3-flash-preview" },
+  --   --     ["nvidia-deepseek"] = vim.tbl_extend("force", nvidia_base, { model = "deepseek-ai/deepseek-v4-pro" }),
+  --   --     ["nvidia-glm"] = vim.tbl_extend("force", nvidia_base, { model = "z-ai/glm-5.1" }),
+  --   --     ["nvidia-mimimax"] = vim.tbl_extend("force", nvidia_base, { model = "minimaxai/minimax-m3" }),
+  --   --     ["nvidia-kimi"] = vim.tbl_extend("force", nvidia_base, { model = "moonshotai/kimi-k2.6" }),
+  --   --     ["groq"] = vim.tbl_extend("force", groq_base, { model = "qwen/qwen3-32b" }),
+  --   --   },
+  --   -- },
+  --   opts = {
+  --     provider = "opencode",
+  --     acp_providers = {
+  --       codex = {
+  --         command = "codex-acp",
+  --         args = {},
+  --         env = {
+  --           NODE_NO_WARNINGS = "1",
+  --           HOME = os.getenv("HOME"),
+  --           PATH = os.getenv("PATH"),
+  --         },
+  --       },
+  --       opencode = {
+  --         command = "opencode",
+  --         args = { "acp" },
+  --       },
+  --     },
+  --   },
+  --   keys = {
+  --     { "<leader>ta", "<cmd>AvanteToggle<cr>", desc = "Toggle Avante" },
+  --   },
+  -- },
   -- -- Claude
   -- {
   --   "claudecode.nvim",
